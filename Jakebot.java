@@ -33,7 +33,7 @@ public class Jakebot extends AdvancedRobot
 	}
 
 	/**
-	 * onScannedRobot: What to do when you see another robot
+	 * onScannedRobot: neal rocks What to do when you see another robot
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
 		// Replace the next line with any behavior you would like

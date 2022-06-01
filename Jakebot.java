@@ -31,6 +31,7 @@ public class Jakebot extends AdvancedRobot
 			if (count > 4) {
 				trackName = null;
 			}
+		execute();
 		}
 	}
 

@@ -35,11 +35,8 @@ public class Jakebot extends AdvancedRobot
 		}
 	}
 
-	/**
-	 * onScannedRobot: neal rocks What to do when you see another robot
-	 */
+	
 	public void onScannedRobot(ScannedRobotEvent e) {
-		// Replace the next line with any behavior you would like
 		if (trackName != null && !e.getName().equals(trackName)) {
             return;
         }
@@ -85,7 +82,14 @@ public void onHitRobot(HitRobotEvent e) {
 	 */
 	public void onHitByBullet(HitByBulletEvent e) {
 		// Replace the next line with any behavior you would like
-		back(10);
+		e.getDistance (); 
+		if (e.getDistance() < 50 ) {
+			if (e.getBearing() > -50 && e.getBearing() <=50) {
+				back(20);
+			}else {
+				scan();
+			}
+		}
 	}
 	
 	/**

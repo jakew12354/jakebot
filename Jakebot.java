@@ -1,6 +1,6 @@
 package jakebot;
 import robocode.*;
-//import java.awt.Color;
+import static robocode.util.Utils.normalRelativeAngleDegrees;
 
 // API help : https://robocode.sourceforge.io/docs/robocode/robocode/Robot.html
 
@@ -20,15 +20,17 @@ public class Jakebot extends AdvancedRobot
     setAdjustGunForRobotTurn(true);
     gunTurnAmt = 5;
 		while(true) {
-			// Replace the next 4 lines with any behavior you would like
 			setTurnGunRight(gunTurnAmt);
             count++;
-            if (count > 1){
+            if (count > 1) {
                 gunTurnAmt = -20;
             }
             if (count > 2) {
                 gunTurnAmt = 40;
             }
+			if (count > 4) {
+				trackName = null;
+			}
 		}
 	}
 
@@ -44,8 +46,38 @@ public class Jakebot extends AdvancedRobot
         if (trackName == null) {
             trackName = e.getName();
             out.println("Tracking " + trackName);
-        } 
+        }
+	count = 0;
+	if (e.getDistance() > 100) {
+		gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
+	setTurnGunRight(gunTurnAmt);
+	turnRight(e.getBearing());
+	ahead(e.getDistance() - 90);
+	return;
 	}
+	gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
+setTurnGunRight(gunTurnAmt);
+fire(3);
+if (e.getDistance() < 50) {
+		if (e.getBearing() > -50 && e.getBearing() <=50) {
+			back(10);
+		} else {
+		ahead(10);
+		}
+	}
+	scan();
+}
+
+public void onHitRobot(HitRobotEvent e) {
+	if (trackName != null && !trackName.equals(e.getName())) {
+		out.println("Tracking " + e.getName() + " due to collision");
+	}
+	trackName = e.getName();
+	gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
+	setTurnGunRight(gunTurnAmt);
+	fire(2);
+	back(30);
+}
 
 	/**
 	 * onHitByBullet: What to do when you're hit by a bullet

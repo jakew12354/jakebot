@@ -81,15 +81,13 @@ public void onHitRobot(HitRobotEvent e) {
 	 * onHitByBullet: What to do when you're hit by a bullet
 	 */
 	public void onHitByBullet(HitByBulletEvent e) {
-		// Replace the next line with any behavior you would like
-		e.getDistance (); 
-		if (e.getDistance() < 50 ) {
-			if (e.getBearing() > -50 && e.getBearing() <=50) {
-				back(20);
-			}else {
-				scan();
-			}
-		}
+		if (trackName != null && !trackName.equals(e.getName())) {
+			out.println("Tracking " + e.getName() + " due to being shot");
+		}	
+		trackName = e.getName();
+		gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
+		setTurnGunRight(gunTurnAmt);
+		execute(onScannedRobot);
 	}
 	
 	/**

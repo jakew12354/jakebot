@@ -45,37 +45,38 @@ public class Jakebot extends AdvancedRobot
             trackName = e.getName();
             out.println("Tracking " + trackName);
         }
-	count = 0;
-	if (e.getDistance() > 100) {
-		gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
-	setTurnGunRight(gunTurnAmt);
-	turnRight(e.getBearing());
-	ahead(e.getDistance() - 90);
-	return;
-	}
-	gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
-setTurnGunRight(gunTurnAmt);
-fire(3);
-if (e.getDistance() < 50) {
-		if (e.getBearing() > -50 && e.getBearing() <=50) {
-			back(10);
-		} else {
-		ahead(10);
+		count = 0;
+		if (e.getDistance() > 100) {
+			gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
+		setTurnGunRight(gunTurnAmt);
+		turnRight(e.getBearing());
+		ahead(e.getDistance() - 90);
+		return;
 		}
+			gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
+		setTurnGunRight(gunTurnAmt);
+		fire(2);
+		if (e.getDistance() < 50) {
+				if (e.getBearing() > -50 && e.getBearing() <=50) {
+					back(10);
+				} else {
+				ahead(10);
+				fire(3);
+				}
+			}
+			scan();
 	}
-	scan();
-}
 
-public void onHitRobot(HitRobotEvent e) {
-	if (trackName != null && !trackName.equals(e.getName())) {
-		out.println("Tracking " + e.getName() + " due to collision");
-	}
-	trackName = e.getName();
-	gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
-	setTurnGunRight(gunTurnAmt);
-	fire(2);
-	back(30);
-}
+	public void onHitRobot(HitRobotEvent e) {
+		if (trackName != null && !trackName.equals(e.getName())) {
+			out.println("Tracking " + e.getName() + " due to collision");
+		}
+		trackName = e.getName();
+		gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
+		setTurnGunRight(gunTurnAmt);
+		fire(2);
+		back(50);
+		}
 
 	/**
 	 * onHitByBullet: What to do when you're hit by a bullet
@@ -87,14 +88,22 @@ public void onHitRobot(HitRobotEvent e) {
 		trackName = e.getName();
 		gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
 		setTurnGunRight(gunTurnAmt);
-		execute(onScannedRobot);
+		execute();	
+		scan();	
 	}
 	
 	/**
 	 * onHitWall: What to do when you hit a wall
 	 */
-	public void onHitWall(HitWallEvent e) {
-		// Replace the next line with any behavior you would like
-		back(20);
+		public void onHitWall(HitWallEvent e) {
+		e.getBearing(); 
+		if (e.getBearing() < 90) {
+			setTurnRight(90);
+			ahead(50);
+		} else{
+			setTurnLeft(90);
+			ahead(50);
+			}
+		count = 0;
 	}	
 }

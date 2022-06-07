@@ -74,7 +74,7 @@ public class Jakebot extends AdvancedRobot
 			trackName = e.getName();
 			gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
 			setTurnGunRight(gunTurnAmt);
-			setFire(2);
+			setFireBullet(2);
 			setAhead(-50);
 		}
 

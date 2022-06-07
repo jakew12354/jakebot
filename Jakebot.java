@@ -3,19 +3,11 @@ package jakebot;
 import robocode.*;
 import static robocode.util.Utils.normalRelativeAngleDegrees;
 
-// API help : https://robocode.sourceforge.io/docs/robocode/robocode/Robot.html
-
-/**
- * Jakebot - a robot by (your name here)
- */
 public class Jakebot extends AdvancedRobot {
 	int count = 0;
 	double gunTurnAmt;
 	String trackName;
 
-	/**
-	 * run: Jakebot's default behavior
-	 */
 	public void run() {
 		trackName = null;
 		setAdjustGunForRobotTurn(true);
@@ -78,9 +70,6 @@ public class Jakebot extends AdvancedRobot {
 		setAhead(-50);
 	}
 
-	/**
-	 * onHitByBullet: What to do when you're hit by a bullet
-	 */
 	public void onHitByBullet(HitByBulletEvent e) {
 		if (trackName != null && !trackName.equals(e.getName())) {
 			out.println("Tracking " + e.getName() + " due to being shot");
@@ -92,9 +81,6 @@ public class Jakebot extends AdvancedRobot {
 		scan();
 	}
 
-	/**
-	 * onHitWall: What to do when you hit a wall
-	 */
 	public void onHitWall(HitWallEvent e) {
 		e.getBearing();
 		if (e.getBearing() < 90) {

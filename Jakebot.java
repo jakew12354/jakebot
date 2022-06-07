@@ -49,39 +49,39 @@ public class Jakebot extends AdvancedRobot
 		if (e.getDistance() > 100) {
 			gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
 		setTurnGunRight(gunTurnAmt);
-		turnRight(e.getBearing());
-		ahead(e.getDistance() - 90);
+		setTurnRight(e.getBearing());
+		setAhead(e.getDistance() - 90);
 		return;
 		}
 			gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
 		setTurnGunRight(gunTurnAmt);
-		fire(2);
+		setFireBullet(3);
 		if (e.getDistance() < 50) {
 				if (e.getBearing() > -50 && e.getBearing() <=50) {
-					back(10);
+					setAhead(-10);
 				} else {
-				ahead(10);
-				fire(3);
+				setAhead(10);
+				setFireBullet(3);
 				}
 			}
 			scan();
 	}
 
-	public void onHitRobot(HitRobotEvent e) {
-		if (trackName != null && !trackName.equals(e.getName())) {
+			public void onHitRobot(HitRobotEvent e) {
+			if (trackName != null && !trackName.equals(e.getName())) {
 			out.println("Tracking " + e.getName() + " due to collision");
-		}
-		trackName = e.getName();
-		gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
-		setTurnGunRight(gunTurnAmt);
-		fire(2);
-		back(50);
+			}
+			trackName = e.getName();
+			gunTurnAmt = normalRelativeAngleDegrees(e.getBearing() + (getHeading() - getRadarHeading()));
+			setTurnGunRight(gunTurnAmt);
+			setFire(2);
+			setAhead(-50);
 		}
 
 	/**
 	 * onHitByBullet: What to do when you're hit by a bullet
 	 */
-	public void onHitByBullet(HitByBulletEvent e) {
+		public void onHitByBullet(HitByBulletEvent e) {
 		if (trackName != null && !trackName.equals(e.getName())) {
 			out.println("Tracking " + e.getName() + " due to being shot");
 		}	
@@ -99,11 +99,19 @@ public class Jakebot extends AdvancedRobot
 		e.getBearing(); 
 		if (e.getBearing() < 90) {
 			setTurnRight(90);
-			ahead(50);
+			setAhead(50);
 		} else{
 			setTurnLeft(90);
-			ahead(50);
+			setAhead(50);
 			}
 		count = 0;
 	}	
+		public void onBulletmissed(BulletMissedEvent e) {
+		count = 0;
+	}
+	public void onWin(WinEvent e) {
+		setAhead(10000);
+		setTurnLeft(90);
+		setTurnRight(90);
+	}
 }
